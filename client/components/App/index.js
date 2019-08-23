@@ -1,16 +1,29 @@
-import React, { Component } from 'react';
-import { hot } from 'react-hot-loader'
+import React, { Component, Fragment } from 'react';
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
 
-import style from "./app.css";
 
-class App extends Component {
-  render() {
-    return (
-        <div className={style.app}>
-          App
-        </div>
-    );
+const GET_USERS = gql`
+  {
+    users {
+      id
+      username
+      email
+    }
   }
-}
+`;
 
-export default hot(module)(App)
+const ExchangeRates = () => (
+    <Query query={GET_USERS} >
+      {({ loading, error, data }) => {
+        if (loading) return <p>Loading...</p>;
+        if (error) return <p>Error :(</p>;
+        console.log(data);
+        return (
+            <div>Looking in to the logs</div>
+        )
+      }}
+    </Query>
+);
+
+export default ExchangeRates;

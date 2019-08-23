@@ -1,41 +1,55 @@
-const path = require('path');
-const express = require('express');
-const webpack = require('webpack');
-const webpackMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
-const config = require('../webpack.server.config');
+import express from 'express';
+import http from 'http';
+import mongoose from 'mongoose';
+import { ApolloServer } from 'apollo-server-express';
 
-const port = 3000
-const app = express();
-const bodyParser = require('body-parser');
+import schema from './schema';
+import resolvers from './resolvers';
+import models from './models';
 
-const compiler = webpack(config);
-const middleware = webpackMiddleware(compiler, {
-  publicPath: config.output.publicPath,
-  contentBase: 'client',
-  stats: {
-    colors: true
-  }
+mongoose.connect('mongodb://localhost:27017/local')
+
+const db = mongoose.connection;
+db.on('error', ()=> {console.log( '---FAILED to connect to mongoose')})
+db.once('open', () => {
+    console.log( '+++Connected to mongoose')
 });
 
-app.use(middleware);
-app.use(webpackHotMiddleware(compiler));
+const server = new ApolloServer({
+    typeDefs: schema,
+    resolvers,
+    formatError: error => {
+        return {
+            ...error
+        };
+    },
+    context: async ({ req, connection }) => {
+        if (connection) {
+            console.log("connection");
+            return {
+                models
+            };
+        }
 
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
-app.use(bodyParser.urlencoded({ extended: true }));
+        if (req) {
+            console.log("req");
+            return {
+                models
+            };
+        }
+    }
+});
 
-app.use(require('./controllers'));
-app.use('*', function (req, res, next) {
-    const filename = path.join(compiler.outputPath, 'index.html')
-    compiler.outputFileSystem.readFile(filename, (err, result) => {
-      if (err) {
-        return next(err)
-      }
-      res.set('content-type', 'text/html')
-      res.send(result)
-      res.end()
-    })
-  })
+const app = express();
+server.applyMiddleware({ app });
 
-app.listen(port, () => console.log('Example app listening on port 3000!'))
+const port = 4000;
+
+const httpServer = http.createServer(app);
+server.installSubscriptionHandlers(httpServer);
+
+// ⚠️ Pay attention to the fact that we are calling `listen` on the http server variable, and not on `app`.
+httpServer.listen(port, () => {
+    console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`)
+    console.log(`🚀 Subscriptions ready at ws://localhost:${port}${server.subscriptionsPath}`)
+})

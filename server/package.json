@@ -1,0 +1,28 @@
+{
+  "name": "graphql_channels_demo_server",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon --exec babel-node index.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/register": "^7.5.5",
+    "nodemon": "^1.19.1"
+  },
+  "dependencies": {
+    "apollo-server": "^2.8.2",
+    "apollo-server-express": "^2.8.2",
+    "express": "^4.17.1",
+    "graphql": "^14.4.2",
+    "graphql-iso-date": "^3.6.1",
+    "graphql-subscriptions": "^1.1.0",
+    "mongoose": "^5.6.10",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "subscriptions-transport-ws": "^0.9.16",
+    "uuid": "^3.3.3"
+  }
+}

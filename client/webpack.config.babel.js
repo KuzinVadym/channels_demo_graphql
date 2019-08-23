@@ -5,11 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  entry: [
-    'react-hot-loader/patch',
-    'webpack-hot-middleware/client?reload=true',
-    path.join(__dirname, 'client/index.js')
-  ],
+  entry: ['./index'],
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
@@ -43,9 +39,7 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new HtmlWebpackPlugin({hash: false, template: './client/index.html'}), 
-    new webpack.NamedModulesPlugin()
+    new HtmlWebpackPlugin({hash: false, template: './index.html'})
   ],
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
