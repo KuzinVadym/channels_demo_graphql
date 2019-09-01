@@ -1,6 +1,0 @@
-#deps
-node_modules
-
-#logs & lock
-yarn.lock
-yarn-error.log
