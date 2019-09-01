@@ -1,7 +1,7 @@
 GraphQl demo project 
 
 Libs: 
-  Client:
+  - Client:
     - Graphql ^14.5.0
     - React ^16.9.0
     - React-apollo ^3.0.1
@@ -12,7 +12,7 @@ Libs:
     - @babel/core 7.5.5
     - React-hot-loader ^4.12.11
     - Css-hot-loader ^1.4.4
-  Server:
+ - Server:
     - express: ^4.17.1
     - graphql: ^14.4.2
     - graphql-subscriptions: ^1.1.0
