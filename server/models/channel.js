@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
 
 const ChannelSchema = new mongoose.Schema({
-  id: String,
   title: String,
-  logo_token: String
+  logo_token: String,
+  selected: Boolean
 });
 
-const User = mongoose.model('User', ChannelSchema);
+const Channel = mongoose.model('Channel', ChannelSchema);
 
-export default User;
+export default Channel;

@@ -2,18 +2,24 @@ import { gql } from 'apollo-server-express';
 
 export default gql`
   extend type Query {
-    channels: [Channel!]
+    channels(selected: Boolean): [Channel!]
   }
   
+  extend type Mutation {
+    initChannels(
+      length: Int!
+    ): [Channel]
+    
+    updateChannel(
+      _id: String!
+      selected: Boolean
+    ): Channel
+  }
   
   type Channel {
-    id: ID!
+    _id: String!
     title: String!
     logo_token: String
-    qualities: [Quality]
-  }
-  
-  type Quality {
-    logo_token: String
+    selected: Boolean
   }
 `;

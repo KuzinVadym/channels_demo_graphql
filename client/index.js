@@ -10,10 +10,9 @@ import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import { getMainDefinition } from 'apollo-utilities';
 
-import { AUTH_TOKEN } from './constants';
-
 import App from './components/App'
 
+import { AUTH_TOKEN } from './constants';
 const httpLink = createHttpLink({
     uri: 'http://localhost:4000/graphql',
 });
@@ -47,9 +46,11 @@ const link = split(
     authLink.concat(httpLink),
 );
 
+const cache = new InMemoryCache();
+
 const client = new ApolloClient({
     link,
-    cache: new InMemoryCache(),
+    cache
 });
 
 render(

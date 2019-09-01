@@ -1,29 +1,38 @@
-import React, { Component, Fragment } from 'react';
-import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import React from 'react';
 
+import Channels from "../Channels";
+import Favorites from "../Favorites";
 
-const GET_USERS = gql`
-  {
-    users {
-      id
-      username
-      email
-    }
-  }
-`;
+//styling
+import useStyles from '../App/style';
+import { ThemeProvider } from '@material-ui/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 
-const ExchangeRates = () => (
-    <Query query={GET_USERS} >
-      {({ loading, error, data }) => {
-        if (loading) return <p>Loading...</p>;
-        if (error) return <p>Error :(</p>;
-        console.log(data);
-        return (
-            <div>Looking in to the logs</div>
-        )
-      }}
-    </Query>
-);
+const theme = createMuiTheme({
+    typography: {
+        subtitle1: {
+            fontFamily: 'Roboto',
+            fontSize: 24,
+            fontWeight: 500,
+        },
+        subtitle2: {
+            fontFamily: 'Hepta Slab',
+            fontSize: 24,
+            fontWeight: 500,
+        },
+    },
+});
 
-export default ExchangeRates;
+const App = () => {
+  const classes = useStyles();
+  return(
+      <ThemeProvider theme={theme}>
+          <div className={classes.main}>
+              <Channels />
+              <Favorites />
+          </div>
+      </ThemeProvider>
+  );
+};
+
+export default App;

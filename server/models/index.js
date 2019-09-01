@@ -1,6 +1,6 @@
-import User from './user'
+import Channel from './Channel'
 
 export default {
-  User
+  Channel
 };
 
